@@ -1,9 +1,14 @@
-## Put comments here that give an overall description of what your
-## functions do
-## 
+## For Programming Assignment 2
+## Paul Taniguchi
+## makeCacheMatrix & cacheSolve computes the inverse of a matrix for a new
+## matrix or retrieves the inverse from cache for old matrix
 
-## Write a short comment describing this function
-## function makeCacheMatrix
+## Requires: matrix is square & invertible
+
+## function makeCacheMatrix - creates a list of functions for storing a 
+# matrix to cache, retrieving a matrix from cache, storing its inverse
+# to cache & retrieiving its inverse from cache 
+# cache is in the cacheSolve environment
 ## input: invertible square matrix
 makeCacheMatrix <- function(origMatrix = numeric()) {
         
@@ -31,17 +36,27 @@ makeCacheMatrix <- function(origMatrix = numeric()) {
 }
 
 
-## Write a short comment describing this function
-# function cacheSolve returns the inverse of a matrix
+## function cacheSolve returns the inverse of a matrix
 # either by calculating a new one or returning a cached matrix
 # this requires the function makeCacheMatrix
 # input: makeCacheMatrix object
-# output: matrix
-cacheSolve <- function(x, ...) {
+# output: inverse matrix
+cacheSolve <- function(newMatrix, ...) {
         
         # check for cached inverse matrix & return it if it exists
+        newInverse <- newMatrix$getInverse()
+        if (!is.null(newInverse)) {
+                message('Getting cached inverse matrix')
+                return(newInverse)
+        }
         
         # calculate new inverse matrix for no cached value
+        data <- newMatrix$getMatrix()
+        # calculate inverse
+        newInverse <- solve(data)
+        # cache inverse
+        newMatrix$setInverse(newInverse)
         
-        ## Return a matrix that is the inverse of 'x'
+        ## Return a matrix that is the inverse of 'newMatrix'
+        return(newInverse)
 }
